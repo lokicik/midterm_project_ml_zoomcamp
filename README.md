@@ -66,7 +66,7 @@ serum_creatinine	serum(blood) creatinine[mg/dL]
 * Cloud deployment
 
 
-### **Dependency and environment management guide**
+## **Dependency and environment management guide**
 
 ``pip install pipenv``
 
@@ -75,19 +75,21 @@ serum_creatinine	serum(blood) creatinine[mg/dL]
 ``pip install -r requirements.txt``
 
 
-### **Containerization**
+## **Containerization**
 1-)``docker tag image_name YOUR_DOCKERHUB_NAME/image_name``
+
 ![docker1](https://github.com/lokicik/midterm_project_ml_zoomcamp/assets/65876412/d2303b74-b71d-45f9-9d2d-e03ec7b1cc1c)
 
 
 2-)``docker push YOUR_DOCKERHUB_NAME/image_name``
+
 ![docker2](https://github.com/lokicik/midterm_project_ml_zoomcamp/assets/65876412/a0bafe9c-24bd-484e-9111-36926d1007ed)
 
 
-Useful link encountered with error.
+Useful link
 https://www.biostars.org/p/9531985/#:~:text=As%20the%20error%20says%20requested,docker%20hub%20credentials%20are%20incorrect.
 
-### **Deployment guide**
+## **Deployment guide**
 #### **To run it locally:**
 
 * Run ``python predict.py`` on a terminal
