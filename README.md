@@ -85,7 +85,46 @@ serum_creatinine	serum(blood) creatinine[mg/dL]
 Useful link encountered with error.
 https://www.biostars.org/p/9531985/#:~:text=As%20the%20error%20says%20requested,docker%20hub%20credentials%20are%20incorrect.
 
-### **Cloud deployment guide**
+### **Deployment guide**
+#### **To run it locally:**
+
+run ``python predict.py`` on a terminal
+
+open a new terminal and run python ``predict_docker.py``
+
+#### **To run it on docker:**
+
+open a terminal
+
+``docker build -t midterm_project .``
+
+``docker run -it --rm -p 7860:7860 midterm_project``
+
+open a new terminal and run ``python predict_docker.py``
+
+#### **To run it on cloud:**
+
+push your image to docker hub like in the Containerization section
+
+open https://render.com/
+
+create a web service
+
+Select "Deploy an existing image from a registry"
+![render0](https://github.com/lokicik/midterm_project_ml_zoomcamp/assets/65876412/e07f0a30-4aad-450e-8a77-7c82838c746e)
+
+enter the image url for your "YOUR_DOCKERHUB_NAME/image_name"
+![render1](https://github.com/lokicik/midterm_project_ml_zoomcamp/assets/65876412/31f2479b-a562-4142-a2c0-89b0838ae5b0)
+
+finalize the setup and run your web service
+
+![render2](https://github.com/lokicik/midterm_project_ml_zoomcamp/assets/65876412/b15fb9f9-ed32-4eb9-9078-cb2418db4eb9)
+
+open up a new terminal and run ``python predict_cloud.py``
+
+
+
+
 
 
 
