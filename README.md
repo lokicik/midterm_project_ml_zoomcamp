@@ -67,12 +67,13 @@ serum_creatinine	serum(blood) creatinine[mg/dL]
 
 
 ## **Dependency and environment management guide**
+You can easily install dependencies from requirements.txt and use venv.
 
-``pip install pipenv``
+* ``pip install pipenv``
 
-``pip shell``
+* ``pip shell``
 
-``pip install -r requirements.txt``
+* ``pip install -r requirements.txt``
 
 
 ## **Containerization**
