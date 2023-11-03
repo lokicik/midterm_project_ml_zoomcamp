@@ -11,14 +11,14 @@ My LinkedIn Profile: https://www.linkedin.com/in/lokmanefe/
 
 Feel free to reach out! ✌
 
-### **Project Presentation**
+## **Project Presentation**
 I would like to introduce my most comprehensive project to date! I have completed the project "Drinking or Smoking Classification" which I developed as the Midterm Project during the 7th week of the Machine Learning Zoomcamp organized by DataTalksClub and presented by Alexey Grigorev. I had the opportunity to apply all the techniques I learned, and I gave my all to this project. I look forward to your feedback and hope for positive reviews!
-### **Problem Description**
+## **Problem Description**
 Besides regular users of smoke and alcohol, passive smokers and non-regular drinkers are getting their body hurt aswell. This project can be used to determine if a passive smoker or a non-regular drinker doing how much damage to their body and know about if they are smoking or drinking as much as a regular users, so they can lower their usage of drinking or smoking. This project also can be used to determine if a child is smoking or drinking, his/her body is affected by the smokers or drinkers around him/her or not.
-### **Problem Solution**
+## **Problem Solution**
 I've used the dataset to develop 2 different models, one for Alcohol Drinking Prediction, and one for Smoking Prediction. The reason I did this is so that the user can input a single record and get the results from both models, drinking and smoking probability. The target variable for the drinking model is "DRK_YN",  for the smoking model it's "SMK_stat_type_cd". I've  extracted the target variables from the dataset and trained models separately. The Smoking Model is a multiclass -can be binary if predictions for 0 and 1 is summarized in prediction 0, which would mean not drinker, and 1 stays 1 which already stands for drinker- classification model which predicts 0/1/2 (never smoked/smoked but quit/smoker). The Drinking Model is a binary classification model which predicts 0/1(drinker/not drinker).
 
-### **Dataset**
+## **Dataset**
 This dataset is collected from National Health Insurance Service in Korea. All personal information and sensitive data were excluded.
 The purpose of this dataset is to:
 
@@ -53,7 +53,7 @@ serum_creatinine	serum(blood) creatinine[mg/dL]
 *   SMK_stat_type_cd	Smoking state, 1(never), 2(used to smoke but quit), 3(still smoke)
 *   DRK_YN	Drinker or Not
 
-### **Midterm Project Requirements (Evaluation Criteria)**
+## **Midterm Project Requirements (Evaluation Criteria)**
 
 * Problem description
 * EDA
