@@ -69,7 +69,9 @@ serum_creatinine	serum(blood) creatinine[mg/dL]
 ### **Dependency and environment management guide**
 
 ``pip install pipenv``
+
 ``pip shell``
+
 ``pip install -r requirements.txt``
 
 
