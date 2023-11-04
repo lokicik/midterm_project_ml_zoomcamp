@@ -97,6 +97,7 @@ https://www.biostars.org/p/9531985/#:~:text=As%20the%20error%20says%20requested,
 * Open a new terminal and run python ``predict_docker.py``
 
 #### **To run it on docker:**
+* Download and run Docker Desktop: https://www.docker.com/
 
 * Open a terminal
 
