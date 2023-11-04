@@ -2,7 +2,7 @@
 
 # PLEASE READ!
 You should download the dataset and change the variables' paths in the scripts to dataset's path but I suggest you to run the scripts in Kaggle notebooks and don't download the data, 
-it would be easier since you wouldn't have to download the data, which is over 100 mb's. I developed the project on Kaggle too, so you don't have to change the dataset paths in the scripts, you just have to add the data to notebook
+it would be easier since you wouldn't have to download the data, which is over 100 mb's. I developed the project on Kaggle too, so you don't have to change the dataset paths in the scripts, you just have to add the data to your notebook if you work on Kaggle.
 
 
 Link for the dataset: https://www.kaggle.com/datasets/sooyoungher/smoking-drinking-dataset/data
