@@ -47,7 +47,7 @@ The purpose of this dataset is to:
 *   triglyceride	triglyceride[mg/dL]
 *   hemoglobin	hemoglobin[g/dL]
 *   urine_protein	protein in urine, 1(-), 2(+/-), 3(+1), 4(+2), 5(+3), 6(+4)
-serum_creatinine	serum(blood) creatinine[mg/dL]
+*   serum_creatinine	serum(blood) creatinine[mg/dL]
 *   SGOT_AST	SGOT(Glutamate-oxaloacetate transaminase) AST(Aspartate transaminase)[IU/L]
 *   SGOT_ALT	ALT(Alanine transaminase)[IU/L]
 *   gamma_GTP	y-glutamyl transpeptidase[IU/L]
