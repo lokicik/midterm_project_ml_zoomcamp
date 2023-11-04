@@ -77,6 +77,8 @@ You can easily install dependencies from requirements.txt and use venv.
 
 * ``pip install -r requirements.txt``
 
+If can't or don't know how to, here are the needed packages
+Just run ``pip install pipenv waitress flask pandas numpy scikit-learn==1.2.2 lightgbm xgboost``
 
 ## **Containerization**
 1-)``docker tag image_name YOUR_DOCKERHUB_NAME/image_name``
