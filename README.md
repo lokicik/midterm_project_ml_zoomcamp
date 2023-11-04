@@ -122,6 +122,8 @@ https://www.biostars.org/p/9531985/#:~:text=As%20the%20error%20says%20requested,
 
 ![render2](https://github.com/lokicik/midterm_project_ml_zoomcamp/assets/65876412/b15fb9f9-ed32-4eb9-9078-cb2418db4eb9)
 
+* Set the host in predict_cloud.py
+
 * Open up a new terminal and run ``python predict_cloud.py``
 
 * Here is the final result
