@@ -35,11 +35,12 @@ def predict():
 
     drinking_prediction = drinking_model.predict(X)
     predicted_class_drinking = drinking_prediction[0]
-    y_pred_drinking = drinking_model.predict_proba(X)[0, 1]
-
+    y_pred_drinking = drinking_model.predict_proba(X)[0]
+    print("drinking 0/1",drinking_model.predict_proba(X))
     smoking_prediction = smoking_model.predict(X)
     predicted_class_smoking = smoking_model.classes_[smoking_prediction[0]]
     y_pred_smoking = smoking_model.predict_proba(X)[0]
+    print("smoking 0/1/2", smoking_model.predict_proba(X))
 
     result = {
         'DRK_YN': {
