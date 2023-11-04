@@ -1,6 +1,6 @@
 ![photo_for_the_notebook](https://github.com/lokicik/midterm_project_ml_zoomcamp/assets/65876412/e0997525-0c58-4854-adf5-de30abf4c86c)
 
-PLEASE READ!
+# PLEASE READ!
 
 Link for the dataset: https://www.kaggle.com/datasets/sooyoungher/smoking-drinking-dataset/data
 
