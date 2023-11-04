@@ -22,8 +22,12 @@ pd.set_option('display.max_columns', None)
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter("ignore", category=ConvergenceWarning)
 
+#####################################################
+# CHANGE PATH TO DATASET'S PATH HERE
 df = pd.read_csv("data.csv")
 df_original = pd.read_csv("data.csv")
+#####################################################
+
 
 possible_na = ["waistline", "sight_left", "sight_right", "SGOT_AST", "gamma_GTP"]
 
