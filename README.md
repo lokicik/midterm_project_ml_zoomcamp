@@ -1,10 +1,11 @@
 ![photo_for_the_notebook](https://github.com/lokicik/midterm_project_ml_zoomcamp/assets/65876412/e0997525-0c58-4854-adf5-de30abf4c86c)
 
 # PLEASE READ!
+You should download the dataset and change the variables' paths in the scripts to dataset's path but I suggest you to run the scripts in Kaggle notebooks and don't download the data, 
+it would be easier since you wouldn't have to download the data, which is over 100 mb's. I developed the project on Kaggle too, so you don't have to change the dataset paths in the scripts, you just have to add the data to notebook
+
 
 Link for the dataset: https://www.kaggle.com/datasets/sooyoungher/smoking-drinking-dataset/data
-
-You should download the dataset and change the variables' paths in the scripts to dataset's path but I suggest you to run the scripts in Kaggle notebooks and don't download the data, it would be easier since you wouldn't have to download the data, which is over 100 mb's.
 
 My Kaggle Profile: https://www.kaggle.com/lokmanefe
 
