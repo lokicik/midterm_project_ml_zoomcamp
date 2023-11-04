@@ -45,7 +45,7 @@ def predict():
         'DRK_YN': {
             'Description' : '1 for Drinker / 0 for Not Drinker',
             'Prediction': int(predicted_class_drinking),
-            'Predicted_Probability': float(y_pred_drinking)
+            'Predicted_Probability': float(y_pred_drinking[int(predicted_class_drinking)])
         },
         'SMK_stat_type_cd': {
             'Description': '0 for Never Smoked / 1 for Used to Smoke / 2 for Still Smoking',
