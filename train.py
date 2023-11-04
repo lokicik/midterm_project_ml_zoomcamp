@@ -1,8 +1,19 @@
+####################################################################################################
+# Hyperparameter optimization isn't done to reduce running time, we use pre-prepared hyperparameters
+# We use a small subset of the data
+####################################################################################################
+
+
+
+######################################## Imports and Options #######################################
+
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import warnings
+import json
+import pickle
 
 from lightgbm import LGBMClassifier
 from xgboost import XGBClassifier
@@ -16,20 +27,17 @@ from sklearn.metrics import mean_squared_error,f1_score,classification_report, r
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import LinearSVC
 from sklearn.model_selection import train_test_split, cross_val_score,GridSearchCV
-
-
 pd.set_option('display.max_columns', None)
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter("ignore", category=ConvergenceWarning)
 
-#####################################################
-# CHANGE PATH TO DATASET'S PATH HERE
-df = pd.read_csv("/kaggle/input/smoking-drinking-dataset/smoking_driking_dataset_Ver01.csv")
-df_original = pd.read_csv("/kaggle/input/smoking-drinking-dataset/smoking_driking_dataset_Ver01.csv")
-#####################################################
 
+
+################# Data Preparation #################
+df = pd.read_csv("/kaggle/input/smoking-drinking-dataset/smoking_driking_dataset_Ver01.csv")
 
 possible_na = ["waistline", "sight_left", "sight_right", "SGOT_AST", "gamma_GTP"]
+
 
 def grab_col_names(df, cat_th=10, car_th=20):
     """
@@ -83,15 +91,12 @@ def grab_col_names(df, cat_th=10, car_th=20):
 
     print(f"Observations(Rows): {df.shape[0]}")
     print(f"Variables(Columns): {df.shape[1]}\n")
-    print(
-        f'cat_cols: {len(cat_cols)}\nnum_cols: {len(num_cols)}\ncat_but_car: {len(cat_but_car)}\nnum_but_cat: {len(num_but_cat)}')
+    print(f'cat_cols: {len(cat_cols)}\nnum_cols: {len(num_cols)}\ncat_but_car: {len(cat_but_car)}\nnum_but_cat: {len(num_but_cat)}')
     print(f"\ncat_cols: {cat_cols}\nnum_cols: {num_cols}\ncat_but_car: {cat_but_car}\n")
 
-    print(
-        f"\ncat_cols data types:\n\n{df[cat_cols].dtypes}\n\nnum_cols data types:\n\n{df[num_cols].dtypes}\n\ncat_but_car data types:\n\n{df[cat_but_car].dtypes}")
+    print(f"\ncat_cols data types:\n\n{df[cat_cols].dtypes}\n\nnum_cols data types:\n\n{df[num_cols].dtypes}\n\ncat_but_car data types:\n\n{df[cat_but_car].dtypes}")
 
     return cat_cols, num_cols, cat_but_car
-
 
 cat_cols, num_cols, cat_but_car = grab_col_names(df)
 
@@ -103,9 +108,10 @@ smk_stat_mapping = {1: 0, 2: 1, 3: 2}
 # Apply the mapping to the column
 df['SMK_stat_type_cd'] = df['SMK_stat_type_cd'].map(smk_stat_mapping)
 
+
 print(possible_na)
 
-
+################# Handling Outliers #################
 def outlier_thresholds(dataframe, col_name, q1=0.05, q3=0.95):
     quartile1 = dataframe[col_name].quantile(q1)
     quartile3 = dataframe[col_name].quantile(q3)
@@ -121,37 +127,36 @@ def check_outlier(df, col_name):
         return True
     else:
         return False
-
-
+    
 outlier_cols = []
 for col in num_cols:
     if check_outlier(df, col):
         outlier_cols.append(col)
         print(col)
-
-
+        
 def winsorize(dataframe, col_name, lower_quantile=0.05, upper_quantile=0.95):
     lower_limit, upper_limit = outlier_thresholds(dataframe, col_name, q1=lower_quantile, q3=upper_quantile)
-
+    
     # Apply Winsorization
-    dataframe[col_name] = dataframe[col_name].apply(
-        lambda x: lower_limit if x < lower_limit else (upper_limit if x > upper_limit else x))
+    dataframe[col_name] = dataframe[col_name].apply(lambda x: lower_limit if x < lower_limit else (upper_limit if x > upper_limit else x))
 
-
-# Defining your lower and upper quantiles for Winsorization
+# Define your lower and upper quantiles for Winsorization
 lower_quantile = 0.05
 upper_quantile = 0.95
 
-# Apply Winsorization
+# Apply Winsorization to a specific column (e.g., "col")
 for col in outlier_cols:
     winsorize(df, col, lower_quantile, upper_quantile)
 
+################# Missing Values #################
 for column in possible_na:
     df = df[df[column] != df[column].max()]
 df = df.drop_duplicates()
 
+################# Feature Engineering #################
 # BMI = weight(kg) / (height(m)^2)
 df['BMI'] = df['weight'] / ((df['height'] / 100) ** 2)
+
 
 conditions = [
     (df['BMI'] < 18.5),
@@ -170,14 +175,13 @@ df['MAP'] = df['DBP'] + (df['SBP'] - df['DBP']) / 3
 # Liver_Enzyme_Ratio = SGOT_AST / SGOT_ALT
 df['Liver_Enzyme_Ratio'] = df['SGOT_AST'] / df['SGOT_ALT']
 
+
 # Anemia_Indicator if hemoglobin < 12 --> anemia
 anemia_threshold = 12
 df['Anemia_Indicator'] = (df['hemoglobin'] < anemia_threshold).astype(int)
 
-from sklearn.preprocessing import MinMaxScaler
 
-smaller_dataset = df.sample(n=20000, random_state=42)
-
+################# Scaling and sampling the dataset #################
 columns_to_scale = df.columns.difference(["DRK_YN", "SMK_stat_type_cd"])
 
 scaler = MinMaxScaler()
@@ -189,22 +193,27 @@ scaled_dataset = df.copy()
 scaled_dataset = scaled_dataset.reset_index(drop=True)  # Reset the index
 scaled_dataset[columns_to_scale] = scaled_df
 
-##########################################################################################
-##################################### TRAINING DRK_YN ####################################
-##########################################################################################
+####################################################################
+# Comment the line below if you want to train the models with the whole dataset
+scaled_dataset = scaled_dataset.sample(n=20000, random_state=42)
+####################################################################
+
+#######################################################################################
+##################################### TRAINING DRK_YN ################################
+#######################################################################################
 X = scaled_dataset.drop(["DRK_YN", "SMK_stat_type_cd"], axis=1)
 y = scaled_dataset["DRK_YN"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+
 results = {}
 
-results["LGBM"] = {'learning_rate': 0.05, 'max_depth': 7, 'num_leaves': 17}
+results["LGBM"] =  {'learning_rate': 0.05, 'max_depth': 7, 'num_leaves': 17}
 results["XGB"] = {'learning_rate': 0.05, 'max_depth': 3, 'n_estimators': 123}
 results["RF"] = {'max_depth': 30, 'min_samples_split': 2, 'n_estimators': 199}
 
 from sklearn.ensemble import VotingClassifier
-
 best_params_lgbm = results["LGBM"]
 best_params_xgb = results["XGB"]
 best_params_rf = results["RF"]
@@ -218,6 +227,7 @@ drinking_model = VotingClassifier(estimators=[
     ("XGB", xgb),
     ("RF", rf)
 ], voting="soft")  # You can use "hard" or "soft" voting
+
 
 drinking_model.fit(X_train, y_train)
 
@@ -239,6 +249,7 @@ print(f"Precision: {precision:.2f}")
 print(f"Recall: {recall:.2f}")
 print(f"F1-Score: {f1:.2f}")
 print(f"ROC AUC: {roc_auc:.2f}")
+
 
 #######################################################################################
 ######################### TRAINING SMK_stat_type_cd ###################################
@@ -270,6 +281,7 @@ smoking_model = VotingClassifier(estimators=[
 
 smoking_model.fit(X_train, y_train)
 
+# Make predictions using the ensemble model
 smoking_predictions = smoking_model.predict(X_test)
 smoking_predictions_v2 = smoking_model.predict_proba(X_test)
 
@@ -291,6 +303,11 @@ print(f"Recall: {recall:.2f}")
 print(f"F1-Score: {f1:.2f}")
 print(f"ROC AUC: {roc_auc:.2f}")
 
+
+###################################################
+################# Prediction ######################
+###################################################
+
 expected_feature_names = [
     'sex', 'age', 'height', 'weight', 'waistline', 'sight_left', 'sight_right',
     'hear_left', 'hear_right', 'SBP', 'DBP', 'BLDS', 'tot_chole', 'HDL_chole',
@@ -299,8 +316,6 @@ expected_feature_names = [
 ]
 
 my_record = X_test.sample(n=1)[expected_feature_names]
-
-import json
 
 json_data = my_record.to_json(orient='records', lines=True)
 parsed_data = json.loads(json_data)
@@ -313,23 +328,16 @@ print(f"DRK_YN (1 for Yes / 0 for No):\nPrediction: {predicted_class_drinking}\n
 
 smoking_prediction = smoking_model.predict(my_record)
 predicted_class_smoking = smoking_model.classes_[smoking_prediction[0]]
-print(
-    f"SMK_stat_type_cd (Smoking Status 1 for Never Smoked) / 2 for Used to Smoke / 3 for Still Smoking)):\nPrediction: {predicted_class_smoking}")
+print(f"SMK_stat_type_cd (Smoking Status 1 for Never Smoked) / 2 for Used to Smoke / 3 for Still Smoking)):\nPrediction: {predicted_class_smoking}")
 
-# Save the model
-import pickle
 
+################## Saving the models #################
 output_file = f'drinking_model.bin'
-output_file
 
 with open(output_file, 'wb') as f_out:
     pickle.dump((drinking_model), f_out)
 
-# Save the model
-import pickle
-
 output_file = f'smoking_model.bin'
-output_file
 
 with open(output_file, 'wb') as f_out:
     pickle.dump((smoking_model), f_out)
