@@ -24,8 +24,8 @@ warnings.simplefilter("ignore", category=ConvergenceWarning)
 
 #####################################################
 # CHANGE PATH TO DATASET'S PATH HERE
-df = pd.read_csv("data.csv")
-df_original = pd.read_csv("data.csv")
+df = pd.read_csv("/kaggle/input/smoking-drinking-dataset/smoking_driking_dataset_Ver01.csv")
+df_original = pd.read_csv("/kaggle/input/smoking-drinking-dataset/smoking_driking_dataset_Ver01.csv")
 #####################################################
 
 
