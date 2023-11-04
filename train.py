@@ -6,6 +6,7 @@ import warnings
 
 from lightgbm import LGBMClassifier
 from xgboost import XGBClassifier
+
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.linear_model import LogisticRegression
@@ -25,8 +26,6 @@ df = pd.read_csv("data.csv")
 df_original = pd.read_csv("data.csv")
 
 possible_na = ["waistline", "sight_left", "sight_right", "SGOT_AST", "gamma_GTP"]
-
-
 
 def grab_col_names(df, cat_th=10, car_th=20):
     """
@@ -135,11 +134,11 @@ def winsorize(dataframe, col_name, lower_quantile=0.05, upper_quantile=0.95):
         lambda x: lower_limit if x < lower_limit else (upper_limit if x > upper_limit else x))
 
 
-# Define your lower and upper quantiles for Winsorization
+# Defining your lower and upper quantiles for Winsorization
 lower_quantile = 0.05
 upper_quantile = 0.95
 
-# Apply Winsorization to a specific column (e.g., "col")
+# Apply Winsorization
 for col in outlier_cols:
     winsorize(df, col, lower_quantile, upper_quantile)
 
@@ -175,24 +174,20 @@ from sklearn.preprocessing import MinMaxScaler
 
 smaller_dataset = df.sample(n=20000, random_state=42)
 
-# Define the columns to be scaled
 columns_to_scale = df.columns.difference(["DRK_YN", "SMK_stat_type_cd"])
 
-# Create a MinMaxScaler
 scaler = MinMaxScaler()
 
-# Scale the selected columns
 scaled_data = scaler.fit_transform(df[columns_to_scale])
 scaled_df = pd.DataFrame(scaled_data, columns=columns_to_scale)
 
-# Combine the scaled columns with the original DataFrame
 scaled_dataset = df.copy()
 scaled_dataset = scaled_dataset.reset_index(drop=True)  # Reset the index
 scaled_dataset[columns_to_scale] = scaled_df
 
-#######################################################################################
-##################################### TRAINING DRK_YN ################################
-#######################################################################################
+##########################################################################################
+##################################### TRAINING DRK_YN ####################################
+##########################################################################################
 X = scaled_dataset.drop(["DRK_YN", "SMK_stat_type_cd"], axis=1)
 y = scaled_dataset["DRK_YN"]
 
@@ -214,34 +209,26 @@ lgbm = LGBMClassifier(**best_params_lgbm)
 xgb = XGBClassifier(**best_params_xgb)
 rf = RandomForestClassifier(**best_params_rf)
 
-# Create a Voting Classifier with the individual models
 drinking_model = VotingClassifier(estimators=[
     ("LGBM", lgbm),
     ("XGB", xgb),
     ("RF", rf)
 ], voting="soft")  # You can use "hard" or "soft" voting
 
-# Fit the Voting Classifier on your training data
 drinking_model.fit(X_train, y_train)
 
-# Make predictions using the ensemble model
 drinking_predictions = drinking_model.predict(X_test)
 
 accuracy = accuracy_score(y_test, drinking_predictions)
 
-# Calculate precision
 precision = precision_score(y_test, drinking_predictions)
 
-# Calculate recall
 recall = recall_score(y_test, drinking_predictions)
 
-# Calculate F1-score
 f1 = f1_score(y_test, drinking_predictions)
 
-# Calculate the confusion matrix
 roc_auc = roc_auc_score(y_test, drinking_predictions)
 
-# Print the evaluation metric
 print("Drinking Prediction Model Performance")
 print(f"Accuracy: {accuracy:.2f}")
 print(f"Precision: {precision:.2f}")
@@ -279,26 +266,20 @@ smoking_model = VotingClassifier(estimators=[
 
 smoking_model.fit(X_train, y_train)
 
-# Make predictions using the ensemble model
 smoking_predictions = smoking_model.predict(X_test)
 smoking_predictions_v2 = smoking_model.predict_proba(X_test)
 
 accuracy = accuracy_score(y_test, smoking_predictions)
 
-# Calculate precision
 precision = precision_score(y_test, smoking_predictions, average='weighted')
 
-# Calculate recall
 recall = recall_score(y_test, smoking_predictions, average='weighted')
 
-# Calculate F1-score
 f1 = f1_score(y_test, smoking_predictions, average='weighted')
 
-# Calculate the ROC
 y_test_bin = label_binarize(y_test, classes=[0, 1, 2])
 roc_auc = roc_auc_score(y_test_bin, smoking_predictions_v2, average='macro')
 
-# Print the evaluation metrics
 print("Smoking Prediction Model Performance")
 print(f"Accuracy: {accuracy:.2f}")
 print(f"Precision: {precision:.2f}")
