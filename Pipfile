@@ -5,6 +5,15 @@ name = "pypi"
 
 [packages]
 seaborn = "*"
+scikit-learn = "1.2.2"
+matplotlib = "*"
+numpy = "*"
+pandas = "*"
+waitress = "*"
+flask = "*"
+xgboost = "*"
+lightgbm = "*"
+requests = "*"
 
 [dev-packages]
 
