@@ -52,7 +52,7 @@ serum_creatinine	serum(blood) creatinine[mg/dL]
 *   SMK_stat_type_cd	Smoking state, 1(never), 2(used to smoke but quit), 3(still smoke)
 *   DRK_YN	Drinker or Not
 
-## **Midterm Project Requirements (Evaluation Criteria)**
+# **Midterm Project Requirements (Evaluation Criteria)**
 
 * Problem description
 * EDA
