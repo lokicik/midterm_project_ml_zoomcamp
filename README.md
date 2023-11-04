@@ -128,7 +128,7 @@ https://www.biostars.org/p/9531985/#:~:text=As%20the%20error%20says%20requested,
 
 * Here is the final result
   
-![result](https://github.com/lokicik/midterm_project_ml_zoomcamp/assets/65876412/c549dcbc-7c98-4bcf-9535-82ad628f8b9b)
+![result](https://github.com/lokicik/midterm_project_ml_zoomcamp/assets/65876412/1f9080d9-a6dd-43b2-99d3-ab58dc6eb781)
 
 
 
