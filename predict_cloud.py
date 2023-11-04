@@ -1,6 +1,9 @@
 import json
 import requests
-host = ""
+######################################################
+# CHANGE "host" WITH YOUR LINK
+host = "smoking-and-drinking.onrender.com"
+######################################################
 url = f'http://{host}/predict'
 
 patient = {
