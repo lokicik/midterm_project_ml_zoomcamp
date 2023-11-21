@@ -75,7 +75,7 @@ You can easily install dependencies from requirements.txt and use venv.
 
 * ``pip install pipenv``
 
-* ``pip shell``
+* ``pipenv shell``
 
 * ``pip install -r requirements.txt``
 
